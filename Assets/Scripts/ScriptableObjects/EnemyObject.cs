@@ -10,7 +10,7 @@ public class EnemyObject : ScriptableObject
     public float detectRange = 5f;
     public float attackRange = 2.5f;
     public float attackCooldown = 10f;
-    public string modelAnimation;
+    public RuntimeAnimatorController animController;
 
     private void OnEnable()
     {
