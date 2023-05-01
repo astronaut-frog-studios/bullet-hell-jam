@@ -98,7 +98,7 @@ public abstract class ShootEnemyBase : EnemyBase
 
     private void WalkToRandomPos()
     {
-        randomPosition = new Vector2(LevelBounds.RandomPosX, LevelBounds.RandomPosY);
+        randomPosition = new Vector2(0,0);
 
         rigidbody.velocity = GetTargetDirection(randomPosition) * enemy.speed;
         state = ShootEnemyBaseState.WALKING;
@@ -108,14 +108,14 @@ public abstract class ShootEnemyBase : EnemyBase
     {
         var direction = target.position - transform.position;
         var angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        rigidbody.rotation = angle;
+        // rigidbody.rotation = angle;
     }
 
     private IEnumerator WaitToSearchRandomPos()
     {
         StopEnemy();
         yield return new WaitForSeconds(2.5f);
-        rigidbody.rotation = 0;
+        // rigidbody.rotation = 0;
         state = ShootEnemyBaseState.SEARCHING_RANDOM_POS;
     }
 
