@@ -1,69 +1,81 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.UI;
 
-internal enum GameState
+namespace Managers
 {
-    WAITING,
-    STARTED,
-    ENDED,
-    TESTING
-}
-
-public class GameManager : Singleton<GameManager>
-{
-    [SerializeField]private GameState state = GameState.WAITING;
-
-    public bool isPaused;
-
-    [SerializeField] private GameObject pausePanel;
-    [SerializeField] private Transform player;
-    [SerializeField] private GameObject transitionPanel, winPanel, defeatPanel;
-
-    public event UnityAction<bool> GameEnded;
-    public void OnGameEnded(bool win = true) => GameEnded?.Invoke(win);
-
-    private void Start()
+    internal enum GameState
     {
-        state = GameState.STARTED;
-        isPaused = false;
-
-        GameEnded += EndGame;
+        WAITING,
+        STARTED,
+        ENDED,
+        TESTING
     }
 
-    private void Update()
+    public class GameManager : Singleton<GameManager>
     {
-        if (state is GameState.TESTING) return;
+        [SerializeField]private GameState state = GameState.WAITING;
 
-        if (isPaused)
+        public bool isPaused;
+        public bool isKeyboardAndMouse = true; 
+
+        [SerializeField] private GameObject pausePanel;
+        [SerializeField] private GameObject transitionPanel, winPanel, defeatPanel;
+        
+        public event UnityAction<bool> GameEnded;
+        public void OnGameEnded(bool win = true) => GameEnded?.Invoke(win);
+        
+        private void Start()
         {
-            if (state != GameState.ENDED)
+            state = GameState.STARTED;
+            isPaused = false;
+        
+            // GameEnded += EndGame;
+            StartCoroutine(CallLoadingScreen());
+        }
+        
+        private void Update()
+        {
+            if (state is GameState.TESTING) return;
+        
+            if (isPaused)
             {
-                pausePanel.SetActive(true);
+                if (state != GameState.ENDED)
+                {
+                    pausePanel.SetActive(true);
+                }
+        
+                AudioSystem.Instance.MuteAll();
+                Time.timeScale = 0;
+                return;
             }
-
-            AudioSystem.Instance.MuteAll();
-            Time.timeScale = 0;
-            return;
+        
+            pausePanel.SetActive(false);
+            AudioSystem.Instance.UnmuteAll();
+            Time.timeScale = 1;
         }
-
-        pausePanel.SetActive(false);
-        AudioSystem.Instance.UnmuteAll();
-        Time.timeScale = 1;
-    }
-
-    private void EndGame(bool win)
-    {
-        isPaused = true;
-        state = GameState.ENDED;
-
-        if (win)
+        
+        // private void EndGame(bool win)
+        // {
+        //     isPaused = true;
+        //     state = GameState.ENDED;
+        //
+        //     if (win)
+        //     {
+        //         winPanel.SetActive(true);
+        //         return;
+        //     }
+        //
+        //     defeatPanel.SetActive(true);
+        // }
+        //
+        private IEnumerator CallLoadingScreen()
         {
-            winPanel.SetActive(true);
-            return;
+            transitionPanel.SetActive(true);
+            var animationLength = transitionPanel.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length;
+        
+            yield return new WaitForSeconds(animationLength);
+            transitionPanel.SetActive(false);
         }
-
-        defeatPanel.SetActive(true);
     }
 }
