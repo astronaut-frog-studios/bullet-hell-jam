@@ -7,7 +7,6 @@ namespace Managers
     public class SettingsManager : MonoBehaviour
     {
         [SerializeField] private Toggle onlyKeyboardToggle, keyboardAndMouseToggle;
-        [SerializeField] private ToggleGroup toggleGroup;
 
         public void ChangeOnlyKeyboard(bool isOn)
         {

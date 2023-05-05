@@ -9,26 +9,23 @@ public class Bullet : MonoBehaviour
 
     [SerializeField] private float autoDestroyTime = 5f;
 
-    public Rigidbody rigid;
+    private new Rigidbody rigidbody;
 
     private void OnEnable()
     {
-        rigid = GetComponent<Rigidbody>();
+        rigidbody = GetComponent<Rigidbody>();
     }
 
-    private void OnCollisionEnter(Collision other)
+    private void OnTriggerEnter(Collider other)
     {
-        if ((layersToCollide.value & (1 << other.gameObject.layer)) > 0)
-        {
-            Destroy(gameObject);
-        }
-
-        //can add components 
+        // Instantiate(hittEffect, transform.position, Quaternion.identity);
+        Destroy(gameObject);
     }
 
     private void Awake()
     {
-        StartCoroutine(DestroySelfAfterSeconds(autoDestroyTime)); // Destruir ela depois de um tempo para não consumir memoria
+        StartCoroutine(
+            DestroySelfAfterSeconds(autoDestroyTime)); // Destruir ela depois de um tempo para não consumir memoria
     }
 
     private IEnumerator DestroySelfAfterSeconds(float destroyTime)
