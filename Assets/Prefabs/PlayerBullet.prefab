@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 4594929377712246697}
   - component: {fileID: 589049736448508053}
   - component: {fileID: 6082785776386334348}
-  m_Layer: 0
-  m_Name: Bullet
+  m_Layer: 7
+  m_Name: PlayerBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -130,5 +130,5 @@ MonoBehaviour:
   hittEffect: {fileID: 0}
   layersToCollide:
     serializedVersion: 2
-    m_Bits: 2147483647
+    m_Bits: 275
   autoDestroyTime: 5
