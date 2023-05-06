@@ -23,7 +23,7 @@ namespace Player
         [SerializeField] private float dashSpeed;
         [SerializeField] private float maxDashCooldown;
         [SerializeField, ReadOnly] private float dashCooldown;
-        [SerializeField] private TrailRenderer dashEffect;
+        [SerializeField] private ParticleSystem dashEffect;
         private bool isDashing;
 
         public void OnMove(InputAction.CallbackContext context)
@@ -147,14 +147,13 @@ namespace Player
             isDashing = true;
             dashCooldown = 0f;
             dashCooldownSlider.value = 0f;
-            dashEffect.emitting = true;
+            dashEffect.Play();
             isInvulnerable = true;
             
             var targetPosition = transform.position + transform.forward * (dashSpeed * 0.2f);
             transform.position = targetPosition;
             yield return new WaitUntil(() => transform.position == targetPosition);
 
-            dashEffect.emitting = false;
             isInvulnerable = false;
             isDashing = false;
 
