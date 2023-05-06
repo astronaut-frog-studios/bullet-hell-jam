@@ -460,7 +460,7 @@ GameObject:
   - component: {fileID: 508952016}
   - component: {fileID: 508952015}
   - component: {fileID: 508952014}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: arm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -648,7 +648,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 763655617}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Fill Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -686,13 +686,13 @@ GameObject:
   m_Component:
   - component: {fileID: 904151459}
   - component: {fileID: 904151460}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: DashCooldownSlider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &904151459
 RectTransform:
   m_ObjectHideFlags: 0
@@ -777,7 +777,7 @@ GameObject:
   - component: {fileID: 937523475}
   - component: {fileID: 937523477}
   - component: {fileID: 937523476}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: DashEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -791,14 +791,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 937523474}
-  m_LocalRotation: {x: -0, y: 0.9990646, z: -0, w: 0.043242633}
-  m_LocalPosition: {x: 0.04, y: -0, z: -0.46}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: 0, y: -0, z: -0.439}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7840956503216793985}
   m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 175.043, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!199 &937523476
 ParticleSystemRenderer:
   serializedVersion: 6
@@ -821,7 +821,7 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: e823cd5b5d27c0f4b8256e7c12ee3e6d, type: 2}
-  - {fileID: 10301, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -863,7 +863,7 @@ ParticleSystemRenderer:
   m_FreeformStretching: 0
   m_RotateWithStretchDirection: 1
   m_VertexStreams: 00010304
-  m_Mesh: {fileID: 0}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
@@ -1124,7 +1124,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.2
+      scalar: 0.81
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -1499,15 +1499,15 @@ ParticleSystem:
         m_RotationOrder: 4
   ShapeModule:
     serializedVersion: 6
-    enabled: 1
+    enabled: 0
     type: 4
-    angle: 25.77
+    angle: 47
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
     radiusThickness: 1
     donutRadius: 0.2
     m_Position: {x: 0, y: 0, z: 0}
-    m_Rotation: {x: 0, y: 0, z: 0}
+    m_Rotation: {x: 10.69, y: 0, z: 0}
     m_Scale: {x: 1, y: 1, z: 1}
     placementMode: 0
     m_MeshMaterialIndex: 0
@@ -1644,7 +1644,7 @@ ParticleSystem:
           m_PostInfinity: 2
           m_RotationOrder: 4
     arc:
-      value: 360
+      value: 359.94
       mode: 0
       spread: 0
       speed:
@@ -1706,7 +1706,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 300
+      scalar: 200
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -2806,7 +2806,7 @@ ParticleSystem:
     radial:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 4.14
+      scalar: 2.97
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -2859,7 +2859,7 @@ ParticleSystem:
     speedModifier:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1.2
+      scalar: 0.57
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -4838,7 +4838,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 1, b: 1, a: 1}
+      maxColor: {r: 0.6084906, g: 1, b: 0.941754, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -5736,7 +5736,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1133538011}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: firePoint
   m_TagString: Untagged
   m_Icon: {fileID: 4422084297763085224, guid: 0000000000000000d000000000000000, type: 0}
@@ -6009,6 +6009,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SnowTrailParticle
       objectReference: {fileID: 0}
+    - target: {fileID: 7936892418291918525, guid: f3d551773e041f049a89e4dfb818def2,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f3d551773e041f049a89e4dfb818def2, type: 3}
 --- !u!1 &1676083520
@@ -6022,7 +6027,7 @@ GameObject:
   - component: {fileID: 1676083521}
   - component: {fileID: 1676083523}
   - component: {fileID: 1676083522}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6045,7 +6050,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.211, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -6099,7 +6104,7 @@ GameObject:
   - component: {fileID: 1859304291}
   - component: {fileID: 1859304290}
   - component: {fileID: 1859304289}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: PlayerCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6199,7 +6204,7 @@ GameObject:
   - component: {fileID: 1994850375}
   - component: {fileID: 1994850377}
   - component: {fileID: 1994850376}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6322,7 +6327,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 55
+    m_Bits: 439
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -6461,7 +6466,7 @@ GameObject:
   - component: {fileID: 8162431922589110809}
   - component: {fileID: 8162431922589110808}
   - component: {fileID: 8162431922589110810}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: PlayerM
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -6633,7 +6638,7 @@ GameObject:
   - component: {fileID: 2132801458004810471}
   - component: {fileID: 400107136333605461}
   - component: {fileID: 1995540532819153776}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6668,8 +6673,8 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 116
-  m_CollisionDetection: 0
+  m_Constraints: 112
+  m_CollisionDetection: 1
 --- !u!33 &7831863976945149380
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -6826,7 +6831,8 @@ MonoBehaviour:
   isInvulnerable: 0
   dash: {fileID: -6986185482366610357, guid: 238ef3406dc46b64fbbd2f3ace5bbb5f, type: 3}
   dashCooldownSlider: {fileID: 904151460}
-  dashSpeed: 6
+  dashTime: 0.15
+  dashSpeed: 16
   maxDashCooldown: 5
   dashCooldown: 0
   dashEffect: {fileID: 937523477}

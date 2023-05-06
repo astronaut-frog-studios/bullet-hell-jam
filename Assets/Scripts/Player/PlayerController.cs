@@ -1,10 +1,14 @@
 using System;
 using System.Collections;
+using System.Numerics;
 using Managers;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using Quaternion = UnityEngine.Quaternion;
+using Vector2 = UnityEngine.Vector2;
+using Vector3 = UnityEngine.Vector3;
 
 namespace Player
 {
@@ -15,11 +19,12 @@ namespace Player
         [SerializeField] private bool isInvulnerable;
         
         private Vector2 moveInput, mouseLook, joystickLook;
-        private Vector3 rotationTarget;
+        private Vector3 rotationTarget, targetDirection, aimDirection;
         private new Rigidbody rigidbody;
 
         [Header("DashArea")] [SerializeField] private InputActionReference dash;
         [SerializeField] private Slider dashCooldownSlider;
+        [SerializeField] private float dashTime = 0.15f;
         [SerializeField] private float dashSpeed;
         [SerializeField] private float maxDashCooldown;
         [SerializeField, ReadOnly] private float dashCooldown;
@@ -96,9 +101,9 @@ namespace Player
 
         private void MoveTowards()
         {
-            var targetDirection = new Vector3(moveInput.x, 0, moveInput.y);
+            targetDirection = new Vector3(moveInput.x, 0, moveInput.y);
             var movement = Quaternion.Euler(0, mainCamera.transform.eulerAngles.y, 0) * targetDirection;
-
+            
             rigidbody.MovePosition(rigidbody.position + movement * Speed);
             RotateTowardsMovementVector(targetDirection);
         }
@@ -113,7 +118,7 @@ namespace Player
 
         private void MoveTowardsAim()
         {
-            var targetDirection = new Vector3(moveInput.x, 0, moveInput.y);
+            targetDirection = new Vector3(moveInput.x, 0, moveInput.y);
             rigidbody.MovePosition(rigidbody.position + targetDirection * Speed);
 
             if (GameManager.Instance.isKeyboardAndMouse)
@@ -122,13 +127,13 @@ namespace Player
                 lookPosition.y = 0f;
                 var rotation = Quaternion.LookRotation(lookPosition);
 
-                var aimDirection = new Vector3(rotationTarget.x, 0f, rotationTarget.y);
+                aimDirection = new Vector3(rotationTarget.x, 0f, rotationTarget.y);
                 if (aimDirection.magnitude == 0) return;
                 transform.rotation = Quaternion.Slerp(transform.rotation, rotation, 0.2f);
             }
             else
             {
-                var aimDirection = new Vector3(joystickLook.x, 0f, joystickLook.y);
+                aimDirection = new Vector3(joystickLook.x, 0f, joystickLook.y);
                 var rotation = Quaternion.LookRotation(aimDirection);
                 if (aimDirection.magnitude == 0) return;
                 transform.rotation = Quaternion.Slerp(transform.rotation, rotation, 0.2f);
@@ -144,21 +149,21 @@ namespace Player
         private IEnumerator DashRoutine()
         {
             dashCooldownSlider.gameObject.SetActive(true);
-            isDashing = true;
             dashCooldown = 0f;
             dashCooldownSlider.value = 0f;
             dashEffect.Play();
             isInvulnerable = true;
-            
-            var targetPosition = transform.position + transform.forward * (dashSpeed * 0.2f);
-            transform.position = targetPosition;
-            yield return new WaitUntil(() => transform.position == targetPosition);
 
+            var dashDirection = aimDirection.magnitude == 0 ? targetDirection : transform.forward;
+            rigidbody.velocity = dashDirection * dashSpeed;
+            yield return new WaitForSeconds(dashTime);
+
+            rigidbody.velocity = Vector3.zero;
             isInvulnerable = false;
             isDashing = false;
+            dashEffect.Stop();
 
             yield return new WaitUntil(() => dashCooldown >= maxDashCooldown);
-
             dashCooldownSlider.gameObject.SetActive(false);
         }
 
