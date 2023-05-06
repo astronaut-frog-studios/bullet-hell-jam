@@ -13,11 +13,14 @@ namespace Player
         [SerializeField] private float bulletSpeed;
         [SerializeField] private int maxAmmo;
 
+        private PlayerController playerController;
+
         private int currentAmmo;
 
         private void Start()
         {
             currentAmmo = maxAmmo;
+            playerController = GetComponent<PlayerController>();
         }
 
         private void PerformShoot(InputAction.CallbackContext context)
@@ -27,7 +30,7 @@ namespace Player
             var bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
             var bulletRigidbody = bullet.GetComponent<Rigidbody>();
 
-            bulletRigidbody.velocity = bulletSpeed * transform.forward;
+            bulletRigidbody.velocity = bulletSpeed * (firePoint.forward);
             currentAmmo--;
         }
 

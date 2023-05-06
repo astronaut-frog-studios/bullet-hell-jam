@@ -14,15 +14,17 @@ namespace Player
 {
     public class PlayerController : MonoBehaviour
     {
+        public bool isInvulnerable;
+        [Header("Movement")] 
         [SerializeField] private float moveSpeed;
         [SerializeField] private Camera mainCamera;
-        [SerializeField] private bool isInvulnerable;
-        
+
         private Vector2 moveInput, mouseLook, joystickLook;
         private Vector3 rotationTarget, targetDirection, aimDirection;
         private new Rigidbody rigidbody;
 
-        [Header("DashArea")] [SerializeField] private InputActionReference dash;
+        [Header("DashArea")] 
+        [SerializeField] private InputActionReference dash;
         [SerializeField] private Slider dashCooldownSlider;
         [SerializeField] private float dashTime = 0.15f;
         [SerializeField] private float dashSpeed;
@@ -103,7 +105,7 @@ namespace Player
         {
             targetDirection = new Vector3(moveInput.x, 0, moveInput.y);
             var movement = Quaternion.Euler(0, mainCamera.transform.eulerAngles.y, 0) * targetDirection;
-            
+
             rigidbody.MovePosition(rigidbody.position + movement * Speed);
             RotateTowardsMovementVector(targetDirection);
         }
@@ -154,7 +156,7 @@ namespace Player
             dashEffect.Play();
             isInvulnerable = true;
 
-            var dashDirection = aimDirection.magnitude == 0 ? targetDirection : transform.forward;
+            var dashDirection = LookingDirection;
             rigidbody.velocity = dashDirection * dashSpeed;
             yield return new WaitForSeconds(dashTime);
 
@@ -166,7 +168,8 @@ namespace Player
             yield return new WaitUntil(() => dashCooldown >= maxDashCooldown);
             dashCooldownSlider.gameObject.SetActive(false);
         }
-
+        
+        public Vector3 LookingDirection =>  aimDirection.magnitude == 0 ? targetDirection : transform.forward;
         private bool CanResetDashCooldown => dashCooldown < maxDashCooldown && !isDashing;
         private bool CanDash => dashCooldown >= maxDashCooldown;
         private float Speed => moveSpeed * Time.fixedDeltaTime;
