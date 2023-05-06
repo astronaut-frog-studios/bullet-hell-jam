@@ -1,7 +1,10 @@
 using System;
+using System.Collections;
 using Managers;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 namespace Player
 {
@@ -9,10 +12,19 @@ namespace Player
     {
         [SerializeField] private float moveSpeed;
         [SerializeField] private Camera mainCamera;
+        [SerializeField] private bool isInvulnerable;
         
         private Vector2 moveInput, mouseLook, joystickLook;
         private Vector3 rotationTarget;
         private new Rigidbody rigidbody;
+
+        [Header("DashArea")] [SerializeField] private InputActionReference dash;
+        [SerializeField] private Slider dashCooldownSlider;
+        [SerializeField] private float dashSpeed;
+        [SerializeField] private float maxDashCooldown;
+        [SerializeField, ReadOnly] private float dashCooldown;
+        [SerializeField] private TrailRenderer dashEffect;
+        private bool isDashing;
 
         public void OnMove(InputAction.CallbackContext context)
         {
@@ -29,17 +41,38 @@ namespace Player
             joystickLook = context.ReadValue<Vector2>();
         }
 
+        private void OnEnable()
+        {
+            dash.action.performed += PerformDash;
+        }
+
+        private void OnDisable()
+        {
+            dash.action.performed -= PerformDash;
+        }
+
         private void Start()
         {
             rigidbody = GetComponent<Rigidbody>();
+            dashCooldown = maxDashCooldown;
         }
 
         private void Update()
         {
+            Debug.DrawRay(transform.position, transform.forward * dashSpeed, Color.green);
+            if (!CanResetDashCooldown)
+            {
+                return;
+            }
+
+            dashCooldown += Time.deltaTime;
+            dashCooldownSlider.value = dashCooldown;
         }
 
         private void FixedUpdate()
         {
+            if (isDashing) return;
+
             if (GameManager.Instance.isKeyboardAndMouse)
             {
                 var ray = mainCamera.ScreenPointToRay(mouseLook);
@@ -47,6 +80,7 @@ namespace Player
                 {
                     rotationTarget = hit.point;
                 }
+
                 MoveTowardsAim();
                 return;
             }
@@ -56,7 +90,7 @@ namespace Player
                 MoveTowards();
                 return;
             }
-            
+
             MoveTowardsAim();
         }
 
@@ -101,6 +135,36 @@ namespace Player
             }
         }
 
+        private void PerformDash(InputAction.CallbackContext context)
+        {
+            if (!CanDash) return;
+            StartCoroutine(DashRoutine());
+        }
+
+        private IEnumerator DashRoutine()
+        {
+            dashCooldownSlider.gameObject.SetActive(true);
+            isDashing = true;
+            dashCooldown = 0f;
+            dashCooldownSlider.value = 0f;
+            dashEffect.emitting = true;
+            isInvulnerable = true;
+            
+            var targetPosition = transform.position + transform.forward * (dashSpeed * 0.2f);
+            transform.position = targetPosition;
+            yield return new WaitUntil(() => transform.position == targetPosition);
+
+            dashEffect.emitting = false;
+            isInvulnerable = false;
+            isDashing = false;
+
+            yield return new WaitUntil(() => dashCooldown >= maxDashCooldown);
+
+            dashCooldownSlider.gameObject.SetActive(false);
+        }
+
+        private bool CanResetDashCooldown => dashCooldown < maxDashCooldown && !isDashing;
+        private bool CanDash => dashCooldown >= maxDashCooldown;
         private float Speed => moveSpeed * Time.fixedDeltaTime;
     }
 }
