@@ -6829,7 +6829,7 @@ MonoBehaviour:
   dashSpeed: 6
   maxDashCooldown: 5
   dashCooldown: 0
-  dashEffect: {fileID: 0}
+  dashEffect: {fileID: 937523477}
 --- !u!114 &8162431922589110809
 MonoBehaviour:
   m_ObjectHideFlags: 0
