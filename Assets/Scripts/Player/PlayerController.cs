@@ -169,7 +169,7 @@ namespace Player
             dashCooldownSlider.gameObject.SetActive(false);
         }
         
-        public Vector3 LookingDirection =>  aimDirection.magnitude == 0 ? targetDirection : transform.forward;
+        private Vector3 LookingDirection =>  aimDirection.magnitude == 0 ? targetDirection : transform.forward;
         private bool CanResetDashCooldown => dashCooldown < maxDashCooldown && !isDashing;
         private bool CanDash => dashCooldown >= maxDashCooldown;
         private float Speed => moveSpeed * Time.fixedDeltaTime;
