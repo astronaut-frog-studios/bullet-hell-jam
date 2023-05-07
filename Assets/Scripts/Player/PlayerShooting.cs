@@ -28,9 +28,10 @@ namespace Player
             // if(currentAmmo <= 0) return;
             
             var bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
-            var bulletRigidbody = bullet.GetComponent<Rigidbody>();
+            var bulletScript = bullet.GetComponent<Bullet>();
 
-            bulletRigidbody.velocity = bulletSpeed * (firePoint.forward);
+            bulletScript.bulletSpeed = bulletSpeed;
+            bulletScript.target = new Vector3(playerController.rotationTarget.x, firePoint.position.y, playerController.rotationTarget.z);
             currentAmmo--;
         }
 

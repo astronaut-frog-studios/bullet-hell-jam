@@ -1,30 +1,22 @@
-using System;
 using System.Collections;
-using System.Numerics;
 using Managers;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
-using Quaternion = UnityEngine.Quaternion;
-using Vector2 = UnityEngine.Vector2;
-using Vector3 = UnityEngine.Vector3;
 
 namespace Player
 {
     public class PlayerController : MonoBehaviour
     {
         public bool isInvulnerable;
-        [Header("Movement")] 
-        [SerializeField] private float moveSpeed;
+        [Header("Movement")] [SerializeField] private float moveSpeed;
         [SerializeField] private Camera mainCamera;
 
         private Vector2 moveInput, mouseLook, joystickLook;
-        private Vector3 rotationTarget, targetDirection, aimDirection;
+        [HideInInspector]public Vector3 rotationTarget, targetDirection, aimDirection;
         private new Rigidbody rigidbody;
 
-        [Header("DashArea")] 
-        [SerializeField] private InputActionReference dash;
+        [Header("DashArea")] [SerializeField] private InputActionReference dash;
         [SerializeField] private Slider dashCooldownSlider;
         [SerializeField] private float dashTime = 0.15f;
         [SerializeField] private float dashSpeed;
@@ -108,6 +100,7 @@ namespace Player
 
             rigidbody.MovePosition(rigidbody.position + movement * Speed);
             RotateTowardsMovementVector(targetDirection);
+            aimDirection = targetDirection;
         }
 
         private void RotateTowardsMovementVector(Vector3 movementVector)
@@ -156,7 +149,7 @@ namespace Player
             dashEffect.Play();
             isInvulnerable = true;
 
-            var dashDirection = LookingDirection;
+            var dashDirection = DashingDirection;
             rigidbody.velocity = dashDirection * dashSpeed;
             yield return new WaitForSeconds(dashTime);
 
@@ -168,8 +161,8 @@ namespace Player
             yield return new WaitUntil(() => dashCooldown >= maxDashCooldown);
             dashCooldownSlider.gameObject.SetActive(false);
         }
-        
-        private Vector3 LookingDirection =>  aimDirection.magnitude == 0 ? targetDirection : transform.forward;
+
+        private Vector3 DashingDirection => aimDirection.magnitude == 0 ? targetDirection : transform.forward;
         private bool CanResetDashCooldown => dashCooldown < maxDashCooldown && !isDashing;
         private bool CanDash => dashCooldown >= maxDashCooldown;
         private float Speed => moveSpeed * Time.fixedDeltaTime;

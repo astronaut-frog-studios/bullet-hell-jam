@@ -6,9 +6,11 @@ public class Bullet : MonoBehaviour
 {
     public GameObject hittEffect;
     [SerializeField] private LayerMask layersToCollide;
-
     [SerializeField] private float autoDestroyTime = 5f;
 
+    [HideInInspector] public float bulletSpeed;
+
+    [HideInInspector] public Vector3 target;
     private new Rigidbody rigidbody;
 
     private void OnEnable()
@@ -24,13 +26,13 @@ public class Bullet : MonoBehaviour
 
     private void Awake()
     {
-        StartCoroutine(
-            DestroySelfAfterSeconds(autoDestroyTime)); // Destruir ela depois de um tempo para não consumir memoria
+        Destroy(gameObject, autoDestroyTime);
     }
 
-    private IEnumerator DestroySelfAfterSeconds(float destroyTime)
+    private void Update()
     {
-        yield return new WaitForSeconds(destroyTime);
-        Destroy(gameObject);
+
+        transform.position = Vector3.MoveTowards(transform.position, target,
+            bulletSpeed * Time.deltaTime);
     }
 }
