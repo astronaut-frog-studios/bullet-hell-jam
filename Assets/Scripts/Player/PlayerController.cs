@@ -2,6 +2,7 @@ using System.Collections;
 using Managers;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Player
@@ -13,7 +14,7 @@ namespace Player
         [SerializeField] private Camera mainCamera;
 
         private Vector2 moveInput, mouseLook, joystickLook;
-        [HideInInspector]public Vector3 rotationTarget, targetDirection, aimDirection;
+        [HideInInspector] public Vector3 aimTarget, rotationTarget,targetDirection, aimDirection;
         private new Rigidbody rigidbody;
 
         [Header("DashArea")] [SerializeField] private InputActionReference dash;
@@ -78,6 +79,8 @@ namespace Player
                 if (Physics.Raycast(ray, out var hit))
                 {
                     rotationTarget = hit.point;
+                    rotationTarget = hit.point - transform.position;
+                    rotationTarget.y = 0;
                 }
 
                 MoveTowardsAim();
@@ -113,26 +116,25 @@ namespace Player
 
         private void MoveTowardsAim()
         {
-            targetDirection = new Vector3(moveInput.x, 0, moveInput.y);
-            rigidbody.MovePosition(rigidbody.position + targetDirection * Speed);
-
             if (GameManager.Instance.isKeyboardAndMouse)
             {
-                var lookPosition = rotationTarget - transform.position;
-                lookPosition.y = 0f;
-                var rotation = Quaternion.LookRotation(lookPosition);
+                var rotation = Quaternion.LookRotation(rotationTarget);
 
-                aimDirection = new Vector3(rotationTarget.x, 0f, rotationTarget.y);
+                aimDirection = new Vector3(rotationTarget.x, 0f, rotationTarget.z);
                 if (aimDirection.magnitude == 0) return;
                 transform.rotation = Quaternion.Slerp(transform.rotation, rotation, 0.2f);
             }
             else
             {
-                aimDirection = new Vector3(joystickLook.x, 0f, joystickLook.y);
+                aimDirection = new Vector3(joystickLook.x, 0f, joystickLook.y * 100f);
+                print(aimDirection);
                 var rotation = Quaternion.LookRotation(aimDirection);
                 if (aimDirection.magnitude == 0) return;
                 transform.rotation = Quaternion.Slerp(transform.rotation, rotation, 0.2f);
             }
+
+            targetDirection = new Vector3(moveInput.x, 0, moveInput.y);
+            rigidbody.MovePosition(rigidbody.position + targetDirection * Speed);            
         }
 
         private void PerformDash(InputAction.CallbackContext context)
