@@ -29,7 +29,7 @@ namespace Player
             
             var bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
             var bulletScript = bullet.GetComponent<Bullet>();
-            var target = new Vector3(playerController.aimDirection.x, firePoint.position.y, playerController.aimDirection.z);
+            var target = new Vector3(playerController.aimDirection.x - firePoint.position.x , firePoint.position.y, playerController.aimDirection.z);
             bulletScript.Shoot(bulletSpeed, target);
             
             currentAmmo--;
