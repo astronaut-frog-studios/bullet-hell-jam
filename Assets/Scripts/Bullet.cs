@@ -8,9 +8,9 @@ public class Bullet : MonoBehaviour
     [SerializeField] private LayerMask layersToCollide;
     [SerializeField] private float autoDestroyTime = 5f;
 
-    [HideInInspector] public float bulletSpeed;
+    [HideInInspector] private float bulletSpeed;
 
-    [HideInInspector] public Vector3 target;
+    [HideInInspector] private Vector3 target;
     private new Rigidbody rigidbody;
 
     private void OnEnable()
@@ -29,8 +29,10 @@ public class Bullet : MonoBehaviour
         Destroy(gameObject, autoDestroyTime);
     }
 
-    private void Update()
+    public void Shoot(float speed, Vector3 direction)
     {
-        transform.Translate(target.normalized * (bulletSpeed * Time.deltaTime));
+        bulletSpeed = speed;
+        target = direction;
+        rigidbody.AddForce(target.normalized * bulletSpeed, ForceMode.Impulse);
     }
 }

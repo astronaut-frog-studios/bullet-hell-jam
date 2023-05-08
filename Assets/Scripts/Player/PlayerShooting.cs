@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -24,26 +23,16 @@ namespace Player
             playerController = GetComponent<PlayerController>();
         }
 
-        private void Update()
-        {
-            // Debug.DrawRay(transform.position,new Vector3(playerController.aimTarget.x, firePoint.position.y, playerController.aimTarget.z), Color.magenta );
-            Debug.DrawRay(transform.position, new Vector3(playerController.aimDirection.x, firePoint.position.y, playerController.aimDirection.z) , Color.magenta);
-        }
-
         private void PerformShoot(InputAction.CallbackContext context)
         {
             // if(currentAmmo <= 0) return;
             
             var bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
             var bulletScript = bullet.GetComponent<Bullet>();
-            var bulletRigidbody = bullet.GetComponent<Rigidbody>();
-
-            bulletScript.bulletSpeed = bulletSpeed;
-            bulletScript.target = new Vector3(playerController.aimDirection.x, firePoint.position.y, playerController.aimDirection.z);
-            // bulletRigidbody.AddForce(target * bulletSpeed, ForceMode.Acceleration);
+            var target = new Vector3(playerController.aimDirection.x, firePoint.position.y, playerController.aimDirection.z);
+            bulletScript.Shoot(bulletSpeed, target);
             
             currentAmmo--;
-            
         }
 
         private void OnEnable()
