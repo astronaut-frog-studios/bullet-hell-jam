@@ -31,9 +31,6 @@ public class Bullet : MonoBehaviour
 
     private void Update()
     {
-
-        transform.position = 
-            Vector3.MoveTowards(transform.position, target,
-            bulletSpeed * Time.deltaTime);
+        transform.Translate(target.normalized * (bulletSpeed * Time.deltaTime));
     }
 }
